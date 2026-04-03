@@ -1,0 +1,14 @@
+{
+  "name": "tcosentino-presentation",
+  "description": "Presentation plugin for generating slide-deck presentations with audio narration",
+  "owner": {
+    "name": "Troy Cosentino"
+  },
+  "plugins": [
+    {
+      "name": "presentation",
+      "description": "Generate self-contained HTML slide-deck presentations with audio narration. Works for educational topics, implementation plans, and any content that benefits from progressive disclosure.",
+      "source": "./"
+    }
+  ]
+}
