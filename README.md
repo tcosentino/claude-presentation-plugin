@@ -2,6 +2,8 @@
 
 A Claude Code plugin that generates self-contained HTML slide-deck presentations with audio narration.
 
+**[Live Demo](https://tcosentino.github.io/claude-presentation-plugin/)** -- a presentation about the plugin, built with the plugin.
+
 ## Features
 
 - Interactive slide decks with progressive disclosure

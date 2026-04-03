@@ -1,0 +1,268 @@
+{
+  "title": "Claude Presentation Plugin",
+  "sections": [
+    {
+      "title": "Introduction",
+      "slides": [
+        {
+          "title": "Claude Presentation Plugin",
+          "subtitle": "Generate interactive slide decks with audio narration from Claude Code",
+          "steps": [
+            {
+              "content": [
+                {"kind": "text", "text": "A Claude Code plugin that turns any topic into a **self-contained HTML presentation** with progressive disclosure and audio narration."}
+              ],
+              "narrationText": "Welcome to the Claude Presentation Plugin. This plugin lets you generate interactive slide-deck presentations with audio narration, all from within Claude Code. Let's walk through how it works.",
+              "narration": "slide-01-step-0.mp3"
+            }
+          ]
+        },
+        {
+          "title": "Getting Started",
+          "subtitle": "Install and use in seconds",
+          "steps": [
+            {
+              "content": [
+                {"kind": "heading", "text": "Installation"},
+                {"kind": "code", "language": "bash", "code": "/plugin install https://github.com/tcosentino/claude-presentation-plugin"}
+              ],
+              "narrationText": "To get started, install the plugin directly from GitHub using the slash plugin install command. That's all the setup you need.",
+              "narration": "slide-02-step-0.mp3"
+            },
+            {
+              "content": [
+                {"kind": "heading", "text": "Usage"},
+                {"kind": "code", "language": "bash", "code": "# Educational presentation\n/presentation TypeScript Type Fundamentals\n\n# Implementation plan as a presentation\n/presentation plan: Add authentication to the API"}
+              ],
+              "narrationText": "Then invoke it with slash presentation followed by your topic. You can also prefix the topic with plan colon to generate an implementation plan as a navigable slide deck.",
+              "narration": "slide-02-step-1.mp3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Content Blocks",
+      "slides": [
+        {
+          "title": "Text & Headings",
+          "subtitle": "Rich inline formatting",
+          "steps": [
+            {
+              "content": [
+                {"kind": "text", "text": "Text blocks support **bold**, `inline code`, and [links](https://github.com). They render as readable paragraphs with proper line height and spacing."}
+              ],
+              "narrationText": "Text blocks are the foundation. They support bold text, inline code, and links. What you're reading right now is a text block.",
+              "narration": "slide-03-step-0.mp3"
+            },
+            {
+              "content": [
+                {"kind": "heading", "text": "Headings Break Up Content"},
+                {"kind": "text", "text": "Use headings within a step to introduce a new sub-topic without creating a whole new slide."}
+              ],
+              "narrationText": "Headings let you break up content within a single step. They're useful when a step covers multiple related points.",
+              "narration": "slide-03-step-1.mp3"
+            }
+          ]
+        },
+        {
+          "title": "Code Blocks",
+          "subtitle": "Syntax highlighting with Highlight.js",
+          "steps": [
+            {
+              "content": [
+                {"kind": "text", "text": "Code blocks feature syntax highlighting, optional filenames, and line highlighting."},
+                {"kind": "code", "language": "typescript", "code": "interface Slide {\n  title: string\n  subtitle?: string\n  steps: Step[]\n}", "filename": "types.ts", "highlight": [2, 3]}
+              ],
+              "narrationText": "Code blocks are syntax highlighted using Highlight.js. You can add a filename header and highlight specific lines to draw attention. Here, lines 2 and 3 are highlighted.",
+              "narration": "slide-04-step-0.mp3"
+            },
+            {
+              "content": [
+                {"kind": "text", "text": "Every code block has a **copy button** for easy clipboard access. Supports TypeScript, Python, Go, Rust, SQL, and many more languages."}
+              ],
+              "narrationText": "Every code block includes a copy button in the top right. The plugin supports all common languages including TypeScript, Python, Go, Rust, SQL, and more.",
+              "narration": "slide-04-step-1.mp3"
+            }
+          ]
+        },
+        {
+          "title": "Bullets & Callouts",
+          "subtitle": "Lists and highlighted information",
+          "steps": [
+            {
+              "content": [
+                {"kind": "bullets", "items": ["Bullets support **bold** and `code` inline", "Great for listing key points", "Each item renders with accent-colored markers"]}
+              ],
+              "narrationText": "Bullet lists are perfect for key points. Each item supports inline formatting like bold and code, and they render with accent-colored markers.",
+              "narration": "slide-05-step-0.mp3"
+            },
+            {
+              "content": [
+                {"kind": "callout", "variant": "tip", "text": "Use **tip** callouts to highlight best practices or helpful shortcuts."},
+                {"kind": "callout", "variant": "warning", "text": "Use **warning** callouts for breaking changes, risks, or things needing careful review."},
+                {"kind": "callout", "variant": "info", "text": "Use **info** callouts for context, background information, or explanations of design choices."}
+              ],
+              "narrationText": "Callouts come in three variants. Tips are green for best practices. Warnings are yellow for risks and breaking changes. And info is blue for background context.",
+              "narration": "slide-05-step-1.mp3"
+            }
+          ]
+        },
+        {
+          "title": "Comparisons",
+          "subtitle": "Side-by-side code panels",
+          "steps": [
+            {
+              "content": [
+                {"kind": "text", "text": "Comparison blocks show two code panels side by side -- perfect for before/after, good/bad, or type vs interface examples."},
+                {"kind": "comparison", "left": {"label": "Before", "code": "function getUser(id) {\n  const user = db.query(id)\n  return user\n}"}, "right": {"label": "After", "code": "async function getUser(\n  id: string\n): Promise<User> {\n  const user = await db.query(id)\n  return user\n}"}}
+              ],
+              "narrationText": "Comparison blocks display two code panels side by side. They're the most powerful block type for plan presentations, showing exactly what code changes look like before and after.",
+              "narration": "slide-06-step-0.mp3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Features",
+      "slides": [
+        {
+          "title": "Progressive Disclosure",
+          "subtitle": "Reveal content step by step",
+          "steps": [
+            {
+              "content": [
+                {"kind": "text", "text": "Each slide has multiple **steps** that reveal content progressively. This is the first step."}
+              ],
+              "narrationText": "Progressive disclosure is at the heart of the presentation format. Each slide has multiple steps that reveal content one at a time, keeping the audience focused.",
+              "narration": "slide-07-step-0.mp3"
+            },
+            {
+              "content": [
+                {"kind": "text", "text": "This is the second step. It faded in with a smooth animation."}
+              ],
+              "narrationText": "This second step faded in with a smooth animation. Press the right arrow or space to advance to the next step.",
+              "narration": "slide-07-step-1.mp3"
+            },
+            {
+              "content": [
+                {"kind": "callout", "variant": "tip", "text": "Each step can have its own audio narration, creating a guided walkthrough experience."}
+              ],
+              "narrationText": "And this is the third step. Each step has its own audio narration, so the presentation becomes a guided walkthrough. The dots at the bottom show your progress through the slide.",
+              "narration": "slide-07-step-2.mp3"
+            }
+          ]
+        },
+        {
+          "title": "Navigation",
+          "subtitle": "Keyboard, touch, and overview",
+          "steps": [
+            {
+              "content": [
+                {"kind": "bullets", "items": ["**Right arrow** or **Space** -- next step", "**Left arrow** -- previous step", "**Escape** -- toggle slide overview", "**Home / End** -- jump to start or end"]},
+                {"kind": "callout", "variant": "info", "text": "On mobile, swipe left or right to navigate between slides."}
+              ],
+              "narrationText": "Navigation works with keyboard shortcuts. Right arrow or space to advance, left arrow to go back, escape to open the slide overview, and home or end to jump. On mobile, you can swipe left or right.",
+              "narration": "slide-08-step-0.mp3"
+            },
+            {
+              "content": [
+                {"kind": "text", "text": "Press **Escape** now to see the overview -- a grid of all slides with section labels. Click any card to jump directly to that slide."}
+              ],
+              "narrationText": "Try pressing escape right now to see the overview. It shows a grid of all slides organized by section. Click any card to jump directly to that slide.",
+              "narration": "slide-08-step-1.mp3"
+            }
+          ]
+        },
+        {
+          "title": "Audio Narration",
+          "subtitle": "Generated with edge-tts",
+          "steps": [
+            {
+              "content": [
+                {"kind": "text", "text": "Audio is generated using **edge-tts** with the `en-GB-SoniaNeural` voice at 1.25x speed. Each step gets its own MP3 file."},
+                {"kind": "code", "language": "bash", "code": "pip install edge-tts\npython3 ${CLAUDE_PLUGIN_ROOT}/scripts/generate-presentation-audio.py presentations/<slug>/"}
+              ],
+              "narrationText": "Audio narration is generated using edge T T S with a British English voice at one and a quarter times speed. Each step gets its own M P 3 file, stored in the audio subdirectory.",
+              "narration": "slide-09-step-0.mp3"
+            },
+            {
+              "content": [
+                {"kind": "callout", "variant": "tip", "text": "The mute button in the footer toggles audio on and off. Your preference is saved to localStorage."}
+              ],
+              "narrationText": "You can toggle audio using the mute button in the bottom center of the screen. Your preference is saved so it persists across page reloads.",
+              "narration": "slide-09-step-1.mp3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Plan Mode",
+      "slides": [
+        {
+          "title": "Plan Presentations",
+          "subtitle": "Turn implementation plans into navigable slide decks",
+          "steps": [
+            {
+              "content": [
+                {"kind": "text", "text": "Prefix your topic with `plan:` to generate an **implementation plan** as a presentation instead of an educational walkthrough."},
+                {"kind": "code", "language": "bash", "code": "/presentation plan: Migrate the database layer from Prisma to Drizzle ORM"}
+              ],
+              "narrationText": "One of the most powerful features is plan mode. Prefix your topic with plan colon to generate an implementation plan as a presentation. Claude will explore the codebase, design a plan, and present it as a navigable slide deck.",
+              "narration": "slide-10-step-0.mp3"
+            },
+            {
+              "content": [
+                {"kind": "text", "text": "Plan presentations use **comparison blocks** heavily to show before/after code changes, and **warning callouts** for risks and breaking changes."},
+                {"kind": "callout", "variant": "info", "text": "You can configure Claude to automatically generate a plan presentation whenever exiting plan mode by adding an instruction to your global `~/.claude/CLAUDE.md`."}
+              ],
+              "narrationText": "Plan presentations make heavy use of comparison blocks for before and after code, and warning callouts for risks. You can even configure Claude to automatically generate a plan presentation whenever you exit plan mode.",
+              "narration": "slide-10-step-1.mp3"
+            }
+          ]
+        },
+        {
+          "title": "Plan Structure",
+          "subtitle": "How plans map to slides",
+          "steps": [
+            {
+              "content": [
+                {"kind": "bullets", "items": ["Major areas of work (backend, frontend) become **sections**", "Individual files or components become **slides**", "Specific modifications become **steps** with progressive reveal"]}
+              ],
+              "narrationText": "Plans map naturally to the presentation format. Major areas of work become sections. Individual files or components become slides. And specific modifications within a file become steps, revealed progressively.",
+              "narration": "slide-11-step-0.mp3"
+            },
+            {
+              "content": [
+                {"kind": "text", "text": "Every plan presentation includes standard sections: **Context & Goal**, **Architecture Overview**, one section per area of change, **Implementation Order**, and **Verification**."}
+              ],
+              "narrationText": "Every plan presentation follows a standard structure: context and goal, architecture overview, one section per area of change, implementation order, and a verification section describing how to test the changes.",
+              "narration": "slide-11-step-1.mp3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Wrap Up",
+      "slides": [
+        {
+          "title": "Get Started",
+          "subtitle": "Install the plugin and try it out",
+          "steps": [
+            {
+              "content": [
+                {"kind": "code", "language": "bash", "code": "/plugin install https://github.com/tcosentino/claude-presentation-plugin"},
+                {"kind": "callout", "variant": "tip", "text": "This presentation was itself generated using the plugin. The source `presentation-data.json` is in the repo's `docs/` directory."}
+              ],
+              "narrationText": "To get started, install the plugin from GitHub. And fun fact: this presentation was itself generated using the plugin. The source data is in the docs directory of the repo. Thanks for watching, and happy presenting!",
+              "narration": "slide-12-step-0.mp3"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
