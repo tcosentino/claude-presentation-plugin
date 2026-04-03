@@ -23,7 +23,7 @@ A Claude Code plugin that generates self-contained HTML slide-deck presentations
 Or install directly from GitHub:
 
 ```
-/plugin install https://github.com/troycosentino/claude-presentation-plugin
+/plugin install https://github.com/tcosentino/claude-presentation-plugin
 ```
 
 ## Usage
