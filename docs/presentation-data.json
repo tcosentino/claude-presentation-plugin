@@ -24,7 +24,7 @@
             {
               "content": [
                 {"kind": "heading", "text": "Installation"},
-                {"kind": "code", "language": "bash", "code": "/plugin install https://github.com/tcosentino/claude-presentation-plugin"}
+                {"kind": "code", "language": "bash", "code": "/plugin marketplace add tcosentino/claude-presentation-plugin\n/plugin install presentation@tcosentino-presentation"}
               ],
               "narrationText": "To get started, install the plugin directly from GitHub using the slash plugin install command. That's all the setup you need.",
               "narration": "slide-02-step-0.mp3"
@@ -181,10 +181,10 @@
           "steps": [
             {
               "content": [
-                {"kind": "text", "text": "Audio is generated using **edge-tts** with the `en-GB-SoniaNeural` voice at 1.25x speed. Each step gets its own MP3 file."},
+                {"kind": "text", "text": "Audio is generated using **edge-tts** with the `en-US-AndrewMultilingualNeural` voice at 1.25x speed. Each step gets its own MP3 file."},
                 {"kind": "code", "language": "bash", "code": "pip install edge-tts\npython3 ${CLAUDE_PLUGIN_ROOT}/scripts/generate-presentation-audio.py presentations/<slug>/"}
               ],
-              "narrationText": "Audio narration is generated using edge T T S with a British English voice at one and a quarter times speed. Each step gets its own M P 3 file, stored in the audio subdirectory.",
+              "narrationText": "Audio narration is generated using edge T T S with an American English voice at one and a quarter times speed. Each step gets its own M P 3 file, stored in the audio subdirectory.",
               "narration": "slide-09-step-0.mp3"
             },
             {
@@ -254,7 +254,7 @@
           "steps": [
             {
               "content": [
-                {"kind": "code", "language": "bash", "code": "/plugin install https://github.com/tcosentino/claude-presentation-plugin"},
+                {"kind": "code", "language": "bash", "code": "/plugin marketplace add tcosentino/claude-presentation-plugin\n/plugin install presentation@tcosentino-presentation"},
                 {"kind": "callout", "variant": "tip", "text": "This presentation was itself generated using the plugin. The source `presentation-data.json` is in the repo's `docs/` directory."}
               ],
               "narrationText": "To get started, install the plugin from GitHub. And fun fact: this presentation was itself generated using the plugin. The source data is in the docs directory of the repo. Thanks for watching, and happy presenting!",
