@@ -1,0 +1,13 @@
+{
+  "name": "presentation",
+  "version": "1.0.0",
+  "description": "Generate self-contained HTML slide-deck presentations with audio narration. Works for educational topics, implementation plans, and any content that benefits from progressive disclosure.",
+  "author": {
+    "name": "Troy Cosentino",
+    "url": "https://github.com/troycosentino"
+  },
+  "repository": "https://github.com/troycosentino/claude-presentation-plugin",
+  "license": "MIT",
+  "keywords": ["presentation", "slides", "audio", "narration", "plan", "course"],
+  "skills": "./skills/"
+}
