@@ -15,7 +15,7 @@ import json
 import sys
 from pathlib import Path
 
-VOICE = 'en-GB-SoniaNeural'
+VOICE = 'en-US-AndrewMultilingualNeural'
 RATE = '+25%'
 
 

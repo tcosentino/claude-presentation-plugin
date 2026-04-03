@@ -133,7 +133,7 @@ Run the audio generation script:
 python3 ${CLAUDE_PLUGIN_ROOT}/scripts/generate-presentation-audio.py presentations/<slug>/
 ```
 
-This requires `edge-tts` to be installed (`pip install edge-tts`). It uses voice `en-GB-SoniaNeural` at `+25%` speed.
+This requires `edge-tts` to be installed (`pip install edge-tts`). It uses voice `en-US-AndrewMultilingualNeural` at `+25%` speed.
 
 ### Phase 3: Verify
 
