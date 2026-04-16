@@ -457,6 +457,11 @@ body {
 
 .audio-btn:hover { background: var(--bg-secondary); color: var(--text-primary); }
 .audio-btn.muted { color: var(--red); }
+.audio-btn.autoplay-active {
+  color: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 8px rgba(99, 102, 241, 0.3);
+}
 
 .slide-counter {
   font-size: 13px;
@@ -692,8 +697,11 @@ body {
     <span>&#8592;</span> Prev <kbd>&#8592;</kbd>
   </button>
   <div class="footer-center">
-    <button class="audio-btn" id="audioBtn" onclick="toggleMute()" title="Toggle audio">
+    <button class="audio-btn" id="audioBtn" onclick="toggleMute()" title="Toggle audio (M)">
       <span id="audioIcon">&#128266;</span>
+    </button>
+    <button class="audio-btn" id="autoplayBtn" onclick="toggleAutoplay()" title="Autoplay (P)">
+      <span id="autoplayIcon">&#9654;</span>
     </button>
     <span class="slide-counter" id="slideCounter"></span>
   </div>
@@ -717,7 +725,9 @@ const PRESENTATION_DATA = {{PRESENTATION_DATA}};
 let currentSlideIndex = 0;
 let currentStep = 0;
 let isMuted = localStorage.getItem('presentation-muted') === 'true';
+let isAutoplay = localStorage.getItem('presentation-autoplay') === 'true';
 let audioElement = new Audio();
+let autoplayTimer = null;
 let overviewOpen = false;
 let allSlides = [];
 
@@ -735,6 +745,8 @@ function init() {
   restorePosition();
 
   updateMuteUI();
+  updateAutoplayUI();
+  audioElement.addEventListener('ended', onAudioEnded);
   renderOverview();
   renderSlide(true);
 
@@ -780,6 +792,9 @@ function handleKeydown(e) {
       break;
     case 'Escape':
       toggleOverview();
+      break;
+    case 'p':
+      toggleAutoplay();
       break;
   }
 }
@@ -1155,16 +1170,33 @@ function escapeHtml(str) {
 
 // ===== AUDIO =====
 function playStepAudio() {
-  if (isMuted) return;
+  if (autoplayTimer) { clearTimeout(autoplayTimer); autoplayTimer = null; }
+  if (isMuted && !isAutoplay) return;
   const slide = allSlides[currentSlideIndex];
   const step = slide.steps[currentStep];
-  if (step && step.narration) {
+  if (step && step.narration && !isMuted) {
     audioElement.pause();
     audioElement.src = 'audio/' + step.narration;
     audioElement.play().catch(() => {
-      // Autoplay blocked -- ignore
+      // Autoplay blocked -- if autoplay is on, schedule a fallback advance
+      if (isAutoplay) scheduleAutoAdvance();
     });
+  } else if (isAutoplay) {
+    // No narration for this step -- auto-advance after a brief reading pause
+    scheduleAutoAdvance();
   }
+}
+
+function scheduleAutoAdvance() {
+  if (autoplayTimer) clearTimeout(autoplayTimer);
+  const slide = allSlides[currentSlideIndex];
+  const step = slide.steps[currentStep];
+  // Estimate reading time from content length, minimum 3s
+  const contentLength = step && step.content
+    ? step.content.reduce((len, b) => len + JSON.stringify(b).length, 0)
+    : 0;
+  const delay = Math.max(3000, Math.min(contentLength * 20, 10000));
+  autoplayTimer = setTimeout(() => { autoplayTimer = null; onAudioEnded(); }, delay);
 }
 
 function toggleMute() {
@@ -1173,6 +1205,8 @@ function toggleMute() {
   updateMuteUI();
   if (isMuted) {
     audioElement.pause();
+    // If autoplay is on, schedule timer-based advance instead
+    if (isAutoplay) scheduleAutoAdvance();
   } else {
     playStepAudio();
   }
@@ -1188,6 +1222,53 @@ function updateMuteUI() {
     icon.innerHTML = '&#128266;';
     btn.classList.remove('muted');
   }
+}
+
+function toggleAutoplay() {
+  isAutoplay = !isAutoplay;
+  localStorage.setItem('presentation-autoplay', isAutoplay);
+  updateAutoplayUI();
+  if (isAutoplay) {
+    // If turning on autoplay while muted, unmute so it works as expected
+    if (isMuted) {
+      isMuted = false;
+      localStorage.setItem('presentation-muted', false);
+      updateMuteUI();
+    }
+    playStepAudio();
+  } else {
+    // Clear any pending auto-advance
+    if (autoplayTimer) { clearTimeout(autoplayTimer); autoplayTimer = null; }
+  }
+}
+
+function updateAutoplayUI() {
+  const btn = document.getElementById('autoplayBtn');
+  const icon = document.getElementById('autoplayIcon');
+  if (isAutoplay) {
+    btn.classList.add('autoplay-active');
+    icon.innerHTML = '&#9646;&#9646;';
+    btn.title = 'Pause autoplay (P)';
+  } else {
+    btn.classList.remove('autoplay-active');
+    icon.innerHTML = '&#9654;';
+    btn.title = 'Autoplay (P)';
+  }
+}
+
+function onAudioEnded() {
+  if (!isAutoplay) return;
+  const slide = allSlides[currentSlideIndex];
+  const isLastStep = currentStep >= slide.steps.length - 1;
+  const isLastSlide = currentSlideIndex >= allSlides.length - 1;
+  if (isLastStep && isLastSlide) {
+    // Reached the end, stop autoplay
+    isAutoplay = false;
+    localStorage.setItem('presentation-autoplay', false);
+    updateAutoplayUI();
+    return;
+  }
+  goNext();
 }
 
 // ===== UI UPDATES =====
