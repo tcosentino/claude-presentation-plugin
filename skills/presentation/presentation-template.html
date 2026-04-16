@@ -567,6 +567,32 @@ body {
   padding: 0;
 }
 
+/* ===== Mermaid Diagrams ===== */
+.mermaid-block {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 24px;
+  margin: 20px 0;
+  overflow-x: auto;
+  display: flex;
+  justify-content: center;
+}
+.mermaid-block .mermaid {
+  min-width: 0;
+  max-width: 100%;
+}
+.mermaid-block svg {
+  max-width: 100%;
+  height: auto;
+}
+.mermaid-error {
+  color: #f88;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  white-space: pre-wrap;
+}
+
 /* ===== Scrollbar ===== */
 .slide-container::-webkit-scrollbar { width: 6px; }
 .slide-container::-webkit-scrollbar-track { background: transparent; }
@@ -586,6 +612,16 @@ body {
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: false,
+    theme: 'dark',
+    securityLevel: 'loose',
+    fontFamily: "'JetBrains Mono', 'Fira Code', monospace"
+  });
+  window.mermaid = mermaid;
+</script>
 </head>
 <body>
 
@@ -821,6 +857,7 @@ function renderSlide(instant = false) {
 
   container.innerHTML = html;
   slideContainer.scrollTop = 0;
+  renderMermaidDiagrams(container);
 
   // Remove instant class after render
   if (instant) {
@@ -838,6 +875,7 @@ function revealStep(stepIndex) {
   const stepEl = document.querySelector(`[data-step="${stepIndex}"]`);
   if (stepEl) {
     stepEl.classList.add('visible');
+    renderMermaidDiagrams(stepEl);
     // Scroll to reveal
     setTimeout(() => {
       stepEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -877,6 +915,9 @@ function renderContentBlock(block) {
 
     case 'code':
       return renderCodeBlock(block);
+
+    case 'mermaid':
+      return renderMermaidBlock(block);
 
     case 'bullets':
       let items = block.items.map(item => `<li>${renderInlineMarkdown(item)}</li>`).join('');
@@ -939,6 +980,33 @@ function renderCodeBlock(block) {
     ${headerHtml}
     <div class="code-body"><pre><code class="hljs">${linesHtml}</code></pre></div>
   </div>`;
+}
+
+let mermaidIdCounter = 0;
+function renderMermaidBlock(block) {
+  const id = 'mermaid-' + (++mermaidIdCounter);
+  return '<div class="mermaid-block"><div class="mermaid" id="' + id + '">' + escapeHtml(block.diagram || '') + '</div></div>';
+}
+
+async function renderMermaidDiagrams(root) {
+  if (!window.mermaid) return;
+  const scope = root || document;
+  const nodes = scope.querySelectorAll('.mermaid:not([data-processed="true"])');
+  for (const node of nodes) {
+    const source = node.textContent;
+    const id = node.id || ('mermaid-' + (++mermaidIdCounter));
+    try {
+      const result = await window.mermaid.render(id + '-svg', source);
+      // Mermaid returns sanitized SVG from author-controlled diagram source.
+      node.innerHTML = result.svg;
+      if (result.bindFunctions) result.bindFunctions(node);
+      node.setAttribute('data-processed', 'true');
+    } catch (err) {
+      node.textContent = 'Mermaid render error: ' + (err && err.message ? err.message : String(err));
+      node.classList.add('mermaid-error');
+      node.setAttribute('data-processed', 'true');
+    }
+  }
 }
 
 function copyCode(btn) {

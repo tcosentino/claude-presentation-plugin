@@ -89,6 +89,7 @@ Create `presentations/<slug>/presentation-data.json` with this exact structure:
 - `{"kind": "bullets", "items": ["...", "..."]}` -- bullet list (items support inline markdown)
 - `{"kind": "callout", "variant": "tip|warning|info", "text": "..."}` -- colored callout box
 - `{"kind": "comparison", "left": {"label": "Before", "code": "..."}, "right": {"label": "After", "code": "..."}}` -- side-by-side code comparison
+- `{"kind": "mermaid", "diagram": "flowchart TD\n  A --> B"}` -- Mermaid diagram. Use for flowcharts, sequence diagrams, state diagrams, ER diagrams, gantt, class diagrams, etc. Prefer this over ASCII art for architecture, flow, or hierarchy visuals. Escape newlines as `\n` in JSON.
 
 #### Narration File Naming
 
