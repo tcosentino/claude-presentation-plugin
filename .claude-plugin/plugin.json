@@ -8,6 +8,6 @@
   },
   "repository": "https://github.com/tcosentino/claude-presentation-plugin",
   "license": "MIT",
-  "keywords": ["presentation", "slides", "audio", "narration", "plan", "course"],
+  "keywords": ["presentation", "slides", "audio", "narration", "plan", "course", "video", "mp4", "export"],
   "skills": "./skills/"
 }
