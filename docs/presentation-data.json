@@ -10,7 +10,7 @@
           "steps": [
             {
               "content": [
-                {"kind": "text", "text": "A Claude Code plugin that turns any topic into a **self-contained HTML presentation** with progressive disclosure and audio narration."}
+                {"kind": "text", "text": "A Claude Code plugin that turns any topic into a **lightweight HTML presentation** with progressive disclosure and audio narration. The runtime loads from CDN for minimal file size."}
               ],
               "narrationText": "Welcome to the Claude Presentation Plugin. This plugin lets you generate interactive slide-deck presentations with audio narration, all from within Claude Code. Let's walk through how it works.",
               "narration": "slide-01-step-0.mp3"

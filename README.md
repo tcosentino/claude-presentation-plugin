@@ -1,6 +1,6 @@
 # claude-presentation-plugin
 
-A Claude Code plugin that generates self-contained HTML slide-deck presentations with audio narration.
+A Claude Code plugin that generates HTML slide-deck presentations with audio narration. The presentation runtime (CSS/JS) is loaded from jsDelivr CDN for minimal file size and shared caching.
 
 **[Live Demo](https://tcosentino.github.io/claude-presentation-plugin/)** -- a presentation about the plugin, built with the plugin.
 
@@ -47,13 +47,14 @@ Prefix with `plan:` to generate an implementation plan as a navigable slide deck
 ## Requirements
 
 - `edge-tts` for audio generation: `pip install edge-tts`
+- Network access -- presentations load runtime CSS/JS from `cdn.jsdelivr.net`
 
 ## Output
 
 Presentations are generated at `presentations/<slug>/` with:
 
 - `presentation-data.json` -- Structured content data
-- `index.html` -- Self-contained presentation (no external dependencies except Highlight.js CDN)
+- `index.html` -- Lightweight presentation shell (~2-5 KB) that loads runtime from jsDelivr CDN
 - `audio/` -- MP3 narration files (one per slide step)
 
 ## Keyboard Shortcuts

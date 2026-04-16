@@ -1,11 +1,11 @@
 ---
 name: presentation
-description: Generate self-contained HTML slide-deck presentations with audio narration
+description: Generate HTML slide-deck presentations with audio narration
 ---
 
 # /presentation Skill
 
-Generate a self-contained HTML slide-deck presentation with audio narration.
+Generate an HTML slide-deck presentation with audio narration. The runtime (CSS/JS) is loaded from jsDelivr CDN.
 
 ## Usage
 
@@ -218,7 +218,8 @@ After generating a plan presentation, open it and ask: **"Review the plan presen
 ## Important Notes
 
 - All code in the `code` field must be properly escaped for JSON (escape backslashes, quotes, newlines)
-- The HTML file loads Highlight.js from CDN (cdnjs.cloudflare.com) for syntax highlighting. Code blocks degrade gracefully to unstyled text if offline
+- **Presentations require network access.** The runtime CSS and JS are loaded from jsDelivr CDN (`cdn.jsdelivr.net/gh/troycosentino/claude-presentation-plugin@v1/runtime/v1/`). Highlight.js and Mermaid are also CDN-hosted. Presentations will not render without an internet connection.
+- The runtime is versioned at `/v1/` -- existing presentations keep working when `/v2/` ships. The runtime source lives in `runtime/v1/` in this repo.
 - Audio files are referenced relatively from the HTML file as `audio/<filename>.mp3`
 - Syntax highlighting is provided by Highlight.js and supports all common languages including: typescript, javascript, python, go, json, sql/postgres, bash/sh, css, html/xml, rust, java, c/cpp, and more
 - Generate the presentation data JSON FIRST, then create the HTML from the template, then generate audio
