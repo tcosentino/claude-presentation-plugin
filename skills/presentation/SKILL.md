@@ -218,7 +218,7 @@ After generating a plan presentation, open it and ask: **"Review the plan presen
 ## Important Notes
 
 - All code in the `code` field must be properly escaped for JSON (escape backslashes, quotes, newlines)
-- **Presentations require network access.** The runtime CSS and JS are loaded from jsDelivr CDN (`cdn.jsdelivr.net/gh/troycosentino/claude-presentation-plugin@v1/runtime/v1/`). Highlight.js and Mermaid are also CDN-hosted. Presentations will not render without an internet connection.
+- **Presentations require network access.** The runtime CSS and JS are loaded from jsDelivr CDN (`cdn.jsdelivr.net/gh/tcosentino/claude-presentation-plugin@v1/runtime/v1/`). Highlight.js and Mermaid are also CDN-hosted. Presentations will not render without an internet connection.
 - The runtime is versioned at `/v1/` -- existing presentations keep working when `/v2/` ships. The runtime source lives in `runtime/v1/` in this repo.
 - Audio files are referenced relatively from the HTML file as `audio/<filename>.mp3`
 - Syntax highlighting is provided by Highlight.js and supports all common languages including: typescript, javascript, python, go, json, sql/postgres, bash/sh, css, html/xml, rust, java, c/cpp, and more

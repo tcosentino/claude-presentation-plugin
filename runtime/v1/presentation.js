@@ -72,15 +72,24 @@
     closeBtn.addEventListener('click', toggleOverview)
   }
 
+  // ===== AUTOPLAY =====
+  var autoplayParams = new URLSearchParams(window.location.search)
+  var isAutoplay = autoplayParams.get('autoplay') === '1'
+  var autoplayPauseMs = parseInt(autoplayParams.get('pause'), 10) || 400
+  var autoplayNoAudioMs = autoplayPauseMs * 4
+
   // ===== STATE =====
   var currentSlideIndex = 0
   var currentStep = 0
-  var isMuted = localStorage.getItem('presentation-muted') === 'true'
+  var isMuted = isAutoplay ? false : localStorage.getItem('presentation-muted') === 'true'
   var audioElement = new Audio()
   var overviewOpen = false
   var allSlides = []
 
   // ===== INIT =====
+  var _readyResolve
+  window.__presentationReady = new Promise(function (resolve) { _readyResolve = resolve })
+
   function init() {
     bootstrap()
 
@@ -91,10 +100,23 @@
       })
     })
 
-    restorePosition()
+    if (!isAutoplay) {
+      restorePosition()
+    }
     updateMuteUI()
     renderOverview()
     renderSlide(true)
+
+    // Signal ready after fonts and initial render settle
+    Promise.all([
+      document.fonts.ready,
+      new Promise(function (r) { requestAnimationFrame(function () { requestAnimationFrame(r) }) })
+    ]).then(function () {
+      _readyResolve(true)
+      if (isAutoplay) {
+        autoplayStart()
+      }
+    })
 
     document.addEventListener('keydown', handleKeydown)
 
@@ -107,6 +129,13 @@
         else goPrev()
       }
     })
+
+    // Autoplay: listen for audio ended to advance
+    if (isAutoplay) {
+      audioElement.addEventListener('ended', function () {
+        setTimeout(autoplayAdvance, autoplayPauseMs)
+      })
+    }
   }
 
   function handleKeydown(e) {
@@ -514,6 +543,32 @@
       .replace(/>/g, '&gt;')
   }
 
+  // ===== AUTOPLAY =====
+  function autoplayStart() {
+    // Play the first step's audio (which triggers the ended -> advance loop)
+    playStepAudio()
+    // If the first step has no audio, kick off the fallback timer
+    var step = allSlides[currentSlideIndex].steps[currentStep]
+    if (!step || !step.narration) {
+      setTimeout(autoplayAdvance, autoplayNoAudioMs)
+    }
+  }
+
+  function autoplayAdvance() {
+    var isLastSlide = currentSlideIndex === allSlides.length - 1
+    var isLastStep = currentStep === allSlides[currentSlideIndex].steps.length - 1
+    if (isLastSlide && isLastStep) {
+      window.dispatchEvent(new Event('presentation-ended'))
+      return
+    }
+    goNext()
+    // If the new step has no audio, schedule the next advance
+    var step = allSlides[currentSlideIndex].steps[currentStep]
+    if (!step || !step.narration) {
+      setTimeout(autoplayAdvance, autoplayNoAudioMs)
+    }
+  }
+
   // ===== AUDIO =====
   function playStepAudio() {
     if (isMuted) return
@@ -522,6 +577,10 @@
     if (step && step.narration) {
       audioElement.pause()
       audioElement.src = 'audio/' + step.narration
+      // Notify external observer (video exporter) before play
+      if (window.__onStepStart) {
+        window.__onStepStart(currentSlideIndex, currentStep, step.narration)
+      }
       audioElement.play().catch(function () {})
     }
   }
