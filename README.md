@@ -94,6 +94,33 @@ Presentations are generated at `presentations/<slug>/` with:
 | Home | Go to start |
 | End | Go to end |
 
+## Development
+
+### Setup
+
+```bash
+yarn install
+```
+
+### Testing
+
+```bash
+yarn test          # Run unit tests
+yarn test:watch    # Run tests in watch mode
+```
+
+Tests use Vitest with jsdom and cover the presentation runtime engine -- navigation, content block rendering, keyboard handling, audio controls, and position persistence.
+
+### Contributing
+
+When making changes:
+
+- **Runtime changes** (`runtime/v1/`) -- update tests, copy to `docs/runtime/v1/`, and tag a new `v1` release for jsDelivr
+- **New content block types** -- add rendering in `presentation.js`, styles in `presentation.css`, docs in `SKILL.md`, and tests
+- **Schema changes** -- maintain backwards compatibility with existing `presentation-data.json` files
+
+See [.claude/CLAUDE.md](.claude/CLAUDE.md) for full development guidelines.
+
 ## License
 
 MIT
