@@ -593,6 +593,48 @@ body {
   white-space: pre-wrap;
 }
 
+/* ===== Image Block ===== */
+.image-block {
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.image-block img {
+  max-width: 100%;
+  max-height: 60vh;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  background: var(--bg-secondary);
+  object-fit: contain;
+}
+.image-block.size-small img { max-height: 35vh; }
+.image-block.size-large img { max-height: 75vh; }
+.image-block.size-full img { max-height: none; width: 100%; }
+.image-block.no-frame img {
+  border: none;
+  box-shadow: none;
+  background: transparent;
+}
+.image-caption {
+  font-size: 14px;
+  color: var(--text-muted);
+  font-style: italic;
+  text-align: center;
+  max-width: 80%;
+}
+.image-error {
+  padding: 24px;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  color: #f88;
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
 /* ===== Scrollbar ===== */
 .slide-container::-webkit-scrollbar { width: 6px; }
 .slide-container::-webkit-scrollbar-track { background: transparent; }
@@ -919,6 +961,9 @@ function renderContentBlock(block) {
     case 'mermaid':
       return renderMermaidBlock(block);
 
+    case 'image':
+      return renderImageBlock(block);
+
     case 'bullets':
       let items = block.items.map(item => `<li>${renderInlineMarkdown(item)}</li>`).join('');
       return `<ul class="content-bullets">${items}</ul>`;
@@ -980,6 +1025,32 @@ function renderCodeBlock(block) {
     ${headerHtml}
     <div class="code-body"><pre><code class="hljs">${linesHtml}</code></pre></div>
   </div>`;
+}
+
+function renderImageBlock(block) {
+  if (!block.src) {
+    return '<div class="image-error">image block missing src</div>';
+  }
+  const sizeClass = block.size ? 'size-' + escapeHtml(block.size) : '';
+  const frameClass = block.frame === false ? 'no-frame' : '';
+  const classes = ['image-block', sizeClass, frameClass].filter(Boolean).join(' ');
+  const alt = escapeHtml(block.alt || '');
+  const src = escapeHtml(block.src);
+  const caption = block.caption
+    ? '<div class="image-caption">' + renderInlineMarkdown(block.caption) + '</div>'
+    : '';
+  return '<div class="' + classes + '">'
+    + '<img src="' + src + '" alt="' + alt + '" loading="lazy" onerror="handleImageError(this)">'
+    + caption
+    + '</div>';
+}
+
+function handleImageError(img) {
+  const src = img.getAttribute('src') || '';
+  const div = document.createElement('div');
+  div.className = 'image-error';
+  div.textContent = 'Failed to load image: ' + src;
+  img.replaceWith(div);
 }
 
 let mermaidIdCounter = 0;

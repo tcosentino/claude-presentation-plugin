@@ -90,6 +90,7 @@ Create `presentations/<slug>/presentation-data.json` with this exact structure:
 - `{"kind": "callout", "variant": "tip|warning|info", "text": "..."}` -- colored callout box
 - `{"kind": "comparison", "left": {"label": "Before", "code": "..."}, "right": {"label": "After", "code": "..."}}` -- side-by-side code comparison
 - `{"kind": "mermaid", "diagram": "flowchart TD\n  A --> B"}` -- Mermaid diagram. Use for flowcharts, sequence diagrams, state diagrams, ER diagrams, gantt, class diagrams, etc. Prefer this over ASCII art for architecture, flow, or hierarchy visuals. Escape newlines as `\n` in JSON.
+- `{"kind": "image", "src": "screenshots/foo.png", "alt": "...", "caption": "optional", "size": "small|medium|large|full", "frame": true}` -- image (typically a screenshot). `src` may be a relative path (resolved relative to the presentation HTML), an absolute URL, or a data URI. `size` defaults to `medium` (60vh max-height); `small` is 35vh, `large` is 75vh, `full` stretches edge-to-edge. `frame: false` removes the border/shadow (use for transparent PNGs or images with their own framing). Place screenshot files alongside `presentation-data.json` in the presentation folder.
 
 #### Narration File Naming
 
